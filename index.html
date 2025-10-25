@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - FOJB Wilayah 11</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Section -->
+    <section id="loginSection" class="login-section">
+        <div class="container">
+            <div class="login-container">
+                <div class="login-header">
+                    <i class="fas fa-user-shield"></i>
+                    <h2>Admin Login</h2>
+                    <p>FOJB Wilayah 11</p>
+                </div>
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="adminEmail">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <input type="email" id="adminEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <input type="password" id="adminPassword" required>
+                    </div>
+                    <button type="submit" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </form>
+                <div id="loginError" class="error-message" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i> Email atau password salah!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboardSection" class="dashboard-section" style="display: none;">
+        <header class="dashboard-header">
+            <div class="container">
+                <div class="dashboard-nav">
+                    <h1><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h1>
+                    <button onclick="logout()" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <h3 id="totalRegistrants">0</h3>
+                    <p>Total Pendaftar</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-school"></i>
+                    <h3 id="totalSchools">0</h3>
+                    <p>Total Sekolah</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-bullhorn"></i>
+                    <h3 id="totalAnnouncements">0</h3>
+                    <p>Total Pengumuman</p>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('registrants')">
+                    <i class="fas fa-user-plus"></i> Data Pendaftar
+                </button>
+                <button class="tab-btn" onclick="showTab('announcements')">
+                    <i class="fas fa-bullhorn"></i> Pengumuman
+                </button>
+            </div>
+
+            <!-- Registrants Tab -->
+            <div id="registrantsTab" class="tab-content">
+                <div class="tab-header">
+                    <h2>Data Pendaftar</h2>
+                    <button onclick="exportData()" class="export-btn">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                </div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Cari nama atau sekolah...">
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Ketua</th>
+                                <th>Sekolah</th>
+                                <th>HP</th>
+                                <th>Email</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registrantsTableBody">
+                            <!-- Data will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Announcements Tab -->
+            <div id="announcementsTab" class="tab-content" style="display: none;">
+                <div class="tab-header">
+                    <h2>Kelola Pengumuman</h2>
+                    <button onclick="showAddAnnouncement()" class="add-btn">
+                        <i class="fas fa-plus"></i> Tambah Pengumuman
+                    </button>
+                </div>
+                <div id="announcementsList" class="announcements-list">
+                    <!-- Announcements will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Announcement Modal -->
+    <div id="announcementModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-bullhorn"></i> Tambah Pengumuman</h3>
+                <button onclick="closeAnnouncementModal()" class="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="announcementForm">
+                <div class="form-group">
+                    <label for="announcementText">Isi Pengumuman</label>
+                    <textarea id="announcementText" rows="4" required></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
+                    <button type="button" onclick="closeAnnouncementModal()" class="cancel-btn">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-info-circle"></i> Detail Pendaftar</h3>
+                <button onclick="closeDetailModal()" class="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="detailContent">
+                <!-- Detail will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
